@@ -1,24 +1,34 @@
-import logo from './logo.svg';
 import './App.css';
+import NavBar from './components/Navbar/Navbar';
+import FormAddWorker from './components/FormAddWorker/FormAddWorker';
+import ListWorker from './components/ListWorker/ListWorker';
+import { lista } from './Lista';
+import { useState } from 'react';
 
 function App() {
+  const [listaColab, setListaColab] = useState(lista);
+  
+
+  const handlerClickAdd = (e) => {
+   setListaColab([...listaColab,{id:listaColab.length + 1, ...e}]);
+  };
+  const handlerSearchNavbar = (listafilter) => {
+    const newLista = listafilter.length == 0 ? lista : listafilter;
+    setListaColab([...newLista]);
+   };
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+    <NavBar 
+    onChangeNavbar = {(e) => handlerSearchNavbar(e)}
+     lista={listaColab} />
+    <section>
+      <FormAddWorker onClickAddWorker={(e) => handlerClickAdd(e)} />
+      <hr />
+      <div className="listWorkerContainer">
+      <ListWorker lista={listaColab}/>
+      </div>
+    </section>
+    </>
   );
 }
 
